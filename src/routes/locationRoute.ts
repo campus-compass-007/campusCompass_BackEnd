@@ -14,19 +14,6 @@ router.get("/", (req: express.Request, res: express.Response) => {
     });
 });
 
-router.get("/:id", (req: express.Request, res: express.Response) => {
-    const { id } = req.params;
-    Location.findOne(id).then((location) => {
-        if (!location) {
-            return res.status(404).json({ error: "Location not found" });
-        }
-        res.json(location);
-    }).catch((error) => {
-        console.error("Error fetching location:", error);
-        res.status(500).json({ error: "Internal server error" });
-    });
-});
-
 //Add Location-Requires Admin Authentication
 router.post("/", passport.authenticate(["jwt","basic"], {session: false}) ,(req: express.Request, res: express.Response)=>{
     console.log(res.statusCode)
