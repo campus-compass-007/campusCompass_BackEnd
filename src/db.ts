@@ -1,17 +1,13 @@
 import mongoose, { Model, Schema } from "mongoose";
 import Location from "./models/location.js";
 
-const initDB = () => {
-    mongoose.connect(process.env.MONGO_URI, {dbName: "MapManage"}).then(() => {
+const initDB = async() => {
+    await mongoose.connect(process.env.MONGO_URI, {dbName: "MapManage"}).then(() => {
         console.log("Database connected!");
-
-    //     db.collection("Manage").find().toArray().then(result => {
-    //         console.log(result);
-    //     })
-    // }).catch((error: MongoError) => {
-    //     console.error("Database connection failed:", error);
-    // })
-})
+    })
+    .catch((error) => {
+        console.error("Database connection failed:", error);
+    });
 }
 
 

@@ -12,7 +12,7 @@ import adminRoute from "./routes/adminRoute.js"
 import passport from "./middleware/passport.js"
 
 dotenv.config()
-initDB()
+await initDB()
 const app = express()
 app.use(morgan("dev"))
 app.use(session({

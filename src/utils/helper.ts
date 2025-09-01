@@ -18,7 +18,7 @@ async function comparePasswords(password: String, hashedPassword: String): Promi
 }
 
 function issueAccessToken(payload){
-    return jwt.sign(payload, config.SECRET, { expiresIn: '15m' });
+    return jwt.sign(payload, config.SECRET as jwt.Secret, { expiresIn: '15m' });
 }
 
 async function createRefreshToken(adminId: String) {
