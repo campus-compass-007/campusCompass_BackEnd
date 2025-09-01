@@ -1,7 +1,8 @@
 # campusCompass_BackEnd
 Repo responsible for all the background operations
 
-The below code, lines 5-31 belong in the overarching docker-compose.yml file. MONGO_URI, SESSION_SECRET, SECRET, VITE_MAPBOX_TOKEN fields will need to be updated with the relevant information, before the docker image can be created successfully. 
+The below code, lines 6-31 belong in the overarching docker-compose.yml file. MONGO_URI, SESSION_SECRET, SECRET, VITE_MAPBOX_TOKEN fields will need to be updated with the relevant information, before the docker image can be created successfully. 
+
 services:
   mongo:
     image: mongo
