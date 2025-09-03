@@ -3,8 +3,9 @@ import mongoose from "mongoose";
 const refreshTokenSchema = new mongoose.Schema(
     {
         token: String,
-        user: {type: mongoose.Schema.Types.ObjectId, ref: "Admin"},
-        expiryDate: Date
+        expiryDate: Date,
+        user: {type: mongoose.Schema.Types.ObjectId, ref: "admins"},
+        
     },
     { timestamps: true }
 )

@@ -1,8 +1,8 @@
 import passport from "passport";
 import passportJwt from "passport-jwt"
 import passportHttp from "passport-http"
-import Admin from "../models/admin.js";
-import helper from "../utils/helper.js"
+import Admin from "../models/admin.ts";
+import helper from "../utils/helper.ts"
 
 const options = {
     jwtFromRequest: passportJwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
