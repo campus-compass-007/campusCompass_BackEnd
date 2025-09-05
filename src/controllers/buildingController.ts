@@ -61,6 +61,7 @@ const deleteBuilding = async (req: express.Request, res: express.Response) => {
     }
 }
 
+
 export default {
     createBuilding,
     getAllBuildings,

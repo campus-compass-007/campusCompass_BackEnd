@@ -7,6 +7,12 @@ import { configDotenv } from "dotenv";
 import {faker} from "@faker-js/faker";
 
 
+// Prevent accidental seeding in production
+if(process.env.NODE_ENV === "production"){
+  console.log("Seeding should not be done in production");
+  process.exit(0);
+}
+
 // //Future proofing for when we run this script on startup if the database is empty
 // if (require.main === module) {
 //   console.log("The script is being run directly");
