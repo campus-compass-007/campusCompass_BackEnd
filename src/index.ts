@@ -5,34 +5,19 @@ import express from "express"
 import session from "express-session"
 import bodyParser from "body-parser"
 import cookieParser from "cookie-parser"
-import config from "./utils/config.js"
-import initDB from "./db.js"
-import locationsRoute from "./routes/locationRoute.js"
-import adminRoute from "./routes/adminRoute.js"
-import passport from "./middleware/passport.js"
+import config from "./utils/config.ts"
+import initDB from "./db.ts"
+import locationsRoute from "./routes/locationRoute.ts"
+import adminRoute from "./routes/adminRoute.ts"
+import passport from "./middleware/passport.ts"
+import app from "./server.ts"
 
 dotenv.config()
-await initDB()
-const app = express()
-app.use(morgan("dev"))
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false
-}))
-app.use(cookieParser())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(passport.initialize())
-app.use("/locations", locationsRoute)
-app.use("/admin", adminRoute)
+initDB()
 
 
-
-app.get('/', (req: e.Request, res: e.Response) => {
-  res.send('Hello World!')
-})
-
-app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`)
 })
+
+export default server;

@@ -1,7 +1,17 @@
-import Location from "../models/location.js";
-import initDB from "../db.js";
+import Location from "../models/location.ts";
+import Building from "../models/building.ts";
+import Lecturer from "../models/lecturer.ts";
+import Office from "../models/office.ts";
+import initDB from "../db.ts";
 import { configDotenv } from "dotenv";
+import {faker} from "@faker-js/faker";
 
+
+// Prevent accidental seeding in production
+if(process.env.NODE_ENV === "production"){
+  console.log("Seeding should not be done in production");
+  process.exit(0);
+}
 
 // //Future proofing for when we run this script on startup if the database is empty
 // if (require.main === module) {
@@ -17,6 +27,58 @@ import { configDotenv } from "dotenv";
 // }
 
 
+
+
+const location = Array.from({ length: 20 }).map(() => ({
+  name: faker.location.city(),
+  shortName: faker.location.city(),
+  address: faker.location.streetAddress(),
+  lat: faker.location.latitude(),
+  lng: faker.location.longitude(),
+  type: faker.helpers.arrayElement(["academic", "library", "administration", "sports", "residence"]),
+  description: faker.lorem.sentence(),
+  facilities: faker.helpers.arrayElements([
+    "Computer Labs",
+    "Lecture Halls",
+    "Engineering Labs",
+    "Science Labs",
+    "Research Centers",
+    "Study Areas",
+    "Archives",
+    "Group Study Rooms",
+    "Student Services",
+    "Registrar",
+    "Finance Office",
+    "Gymnasium",
+    "Swimming Pool",
+    "Sports Fields",
+    "Fitness Center",
+    "Dining Hall",
+    "Recreation Room"
+  ])
+}));
+
+const building = Array.from({ length: 20 }).map(() => ({
+  name: faker.company.name(),
+  lat: faker.location.latitude(),
+  lng: faker.location.longitude(),
+  floors: faker.number.int({ min: 1, max: 3 }),
+  offices: faker.helpers.arrayElements([faker.database.mongodbObjectId(), faker.database.mongodbObjectId(), faker.database.mongodbObjectId()]),
+}));
+
+const lecturer = Array.from({ length: 20 }).map(() => ({
+  name: faker.person.fullName(),
+  title: faker.person.jobTitle(),
+  department: faker.helpers.arrayElement(["Computer Science", "Mathematics", "Physics", "Chemistry", "Biology"]),
+  email: faker.internet.email()
+}));
+
+const office = Array.from({ length: 20 }).map(() => ({
+  name: faker.company.name(),
+  building: faker.helpers.arrayElement([faker.database.mongodbObjectId(), faker.database.mongodbObjectId(), faker.database.mongodbObjectId()]),
+  lecturers: faker.helpers.arrayElements([faker.database.mongodbObjectId(), faker.database.mongodbObjectId(), faker.database.mongodbObjectId()]),
+}));
+
 configDotenv();
 await initDB();
 await seedDatabase().then(() => {
@@ -25,110 +87,13 @@ await seedDatabase().then(() => {
 
 async function seedDatabase() {
   await Location.deleteMany({});
-  const locations = [{
-  "name": "Faculty of Engineering",
-  "shortName": "Engineering",
-  "address": "North West University, Potchefstroom",
-  "lat": -26.6906,
-  "lng": 27.0933,
-  "type": "academic",
-  "description": "Engineering faculty building",
-  "facilities": [
-    "Computer Labs",
-    "Lecture Halls",
-    "Engineering Labs"
-  ],
-  "__v": 0
-},
-{
-  "name": "Faculty of Natural and Agricultural Sciences",
-  "shortName": "Nat & Agri Sciences",
-  "address": "North West University, Potchefstroom",
-  "lat": -26.6906,
-  "lng": 27.0933,
-  "type": "academic",
-  "description": "Natural and Agricultural Sciences faculty",
-  "facilities": [
-    "Science Labs",
-    "Lecture Halls",
-    "Research Centers"
-  ]
-},
-{
-  "name": "Ferdinand Postma Library",
-  "shortName": "Main Library",
-  "address": "North West University, Potchefstroom",
-  "lat": -26.6906,
-  "lng": 27.0933,
-  "type": "library",
-  "description": "Main university library",
-  "facilities": [
-    "Study Areas",
-    "Computer Lab",
-    "Archives",
-    "Group Study Rooms"
-  ]
-},
-{
-  "name": "Administration Building",
-  "shortName": "Admin",
-  "address": "North West University, Potchefstroom",
-  "lat": -26.6906,
-  "lng": 27.0933,
-  "type": "administration",
-  "description": "Main administration building",
-  "facilities": [
-    "Student Services",
-    "Registrar",
-    "Finance Office"
-  ]
-},
-{
-  "name": "Sports Complex",
-  "shortName": "Sports",
-  "address": "North West University, Potchefstroom",
-  "lat": -26.6906,
-  "lng": 27.0933,
-  "type": "sports",
-  "description": "Main sports and recreation complex",
-  "facilities": [
-    "Gymnasium",
-    "Swimming Pool",
-    "Sports Fields",
-    "Fitness Center"
-  ]
-},
-{
-  "name": "Vergeet-My-Nie",
-  "shortName": "VMN",
-  "address": "North West University, Potchefstroom",
-  "lat": -26.6906,
-  "lng": 27.0933,
-  "type": "residence",
-  "description": "Student residence",
-  "facilities": [
-    "Dining Hall",
-    "Study Areas",
-    "Recreation Room"
-  ]
-},
-{
-  "name": "Heimat",
-  "shortName": "Heimat",
-  "address": "North West University, Potchefstroom",
-  "lat": -26.6906,
-  "lng": 27.0933,
-  "type": "residence",
-  "description": "Student residence",
-  "facilities": [
-    "Dining Hall",
-    "Study Areas",
-    "Recreation Room"
-  ]
-}
-
-  ];
-  await Location.insertMany(locations);
+  await Location.insertMany(location);
+  await Building.deleteMany({});
+  await Building.insertMany(building);
+  await Lecturer.deleteMany({});
+  await Lecturer.insertMany(lecturer);
+  await Office.deleteMany({});
+  await Office.insertMany(office);
   console.log("Database seeded!");
 }
 

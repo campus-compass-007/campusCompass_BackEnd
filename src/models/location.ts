@@ -9,7 +9,8 @@ const locationSchema = new Schema({
     lng: Number,
     type: String,
     description: String,
-    facilities: [String]
+    facilities: [String],
+    buildings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Building" }]
 })
 
 const Location = model("Location", locationSchema)
